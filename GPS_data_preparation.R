@@ -150,16 +150,42 @@ write.csv(woregps, "woregps.csv", row.names = F)
 
 ## number of days of data
 step3data %>% 
-  filter(social_netid %in% woregps) %>% 
+  filter(social_netid %in% woregps$social_netid) %>% 
+  mutate(id_day = paste(social_netid, as.Date(timestamp), sep = "_")) %>% 
   pull(id_day) %>% 
   n_distinct()
+
 ## number of days of data per person
 step3data %>% 
-  filter(social_netid %in% woregps) %>% 
+  filter(social_netid %in% woregps$social_netid) %>% 
+  mutate(id_day = paste(social_netid, as.Date(timestamp), sep = "_")) %>% 
   select(social_netid, id_day) %>% 
   distinct() %>% 
   count(social_netid) %>% 
   summarise(mean_days = mean(n), median_days = median(n), sd_days = sd(n), min_days = min(n), max_days = max(n))
+
+## number of weeks of data per person
+gpswks <- data.frame(
+  d1 = c("10/04/2019", "10/11/2019", "10/18/2019", "10/25/2019", "11/01/2019", "11/08/2019", "11/15/2019"),
+  d2 = c("10/10/2019", "10/17/2019", "10/24/2019", "10/31/2019", "11/07/2019", "11/14/2019", "11/21/2019")
+) %>% 
+  mutate(d1 = as.Date(d1, format = "%m/%d/%Y", tz = "UTC"),
+         d2 = as.Date(d2, format = "%m/%d/%Y", tz = "UTC"))
+step3data %>% 
+  mutate(dt = as.Date(timestamp)) %>% 
+  select(social_netid, dt) %>% 
+  distinct() %>% 
+  mutate(wk = case_when(dt %in% seq(gpswks$d1[1], gpswks$d2[1], by = 1) ~ 1,
+                        dt %in% seq(gpswks$d1[2], gpswks$d2[2], by = 1) ~ 2,
+                        dt %in% seq(gpswks$d1[3], gpswks$d2[3], by = 1) ~ 3,
+                        dt %in% seq(gpswks$d1[4], gpswks$d2[4], by = 1) ~ 4,
+                        dt %in% seq(gpswks$d1[5], gpswks$d2[5], by = 1) ~ 5,
+                        dt %in% seq(gpswks$d1[6], gpswks$d2[6], by = 1) ~ 6,
+                        dt %in% seq(gpswks$d1[7], gpswks$d2[7], by = 1) ~ 7)) %>% 
+  select(-dt) %>% 
+  distinct() %>% 
+  count(social_netid) %>% 
+  summarise(mean_wks = mean(n), median_wks = median(n), sd_wks = sd(n), min_wks = min(n), max_wks = max(n))
 
 ########################################
 ## 4. Calculate entire UDs  ####
