@@ -1,5 +1,6 @@
 # Compare-TPN-Mandena1
-Public code for the manuscript "Comparing transmission potential networks based on social network surveys, close contacts, and environmental overlap in rural Madagascar"  
+Public code for the manuscript:
+Kauffman Kayla, wener Courtney S., Titcomb Georgia, Pender Michelle, Rabezara Jean Yves, Herrera James P., Shapiro Julie Teresa, Solis Alma, Soarimalala Voahangy, Tortosa Pablo, Kramer Randall, Moody James, Mucha Peter J. and Nunn Charles. 2022 Comparing transmission potential networks based on social network surveys, close contacts and environmental overlap in rural Madagascar. J. R. Soc. Interface. 19:20210690. 20210690. <http://doi.org/10.1098/rsif.2021.0690>
 
 ### GPS_data_preparation.R  
 (which sources functions in **clean_GPS_functions.R**) goes through the processes:  
